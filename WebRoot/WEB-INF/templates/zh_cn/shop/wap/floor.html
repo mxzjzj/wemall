@@ -1,0 +1,7 @@
+#set ($i=0)
+<div id="floors" class="">
+	#foreach($floor in $floors)
+	#set($i=$i+1)
+	<div load_url="wap/floor_ajax.htm" id="$!floor.id" count="$i" class="nongye-dv1"></div>
+	#end
+</div>

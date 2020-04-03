@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css"
+	href="$!webPath/resources/style/system/front/wap/css/tg.css" />
+</head>
+
+<body>
+	<div class="tg">
+		<div class="tg-top">
+			<span id="tg-toubu"> 锡好拼团 </span>
+		</div>
+<div class="">
+			<img
+				src="$!webPath/resources/style/system/front/wap/images/pingtuan.png" />
+		</div>
+		#foreach($group in $ggs)
+		
+		<div class="">
+			<img
+				src="$!webPath/$!group.gg_img.path/$!group.gg_img.name" />
+		</div>
+		<div class="">
+			<span id="tg-biaoti"> $!{group.gg_name} </span>
+		</div>
+		<div class="">
+			<span id="tg-jianjie"></span>
+		</div>
+		<div class="tg-bottom">
+			<span id="tg-jiage">
+				#set($buyer_count=$!group.gg_def_count+$!group.gg_vir_count)
+				#set($left_count=$!group.gg_count)
+				#set($total_count=$!group.gg_def_count+$!group.gg_vir_count+$!group.gg_count)
+				$!{buyer_count}人已购买 ¥$!{group.gg_price}
+				#set($goodsId=$!group.gg_goods.id) </span> <a
+				href="$!webPath/goods_$!{goodsId}.htm"> <span id="tg-kaituan">
+					去#if($buyer_count>0)拼#else开#end团 </span>
+			</a>
+		</div>
+		#end
+
+		<div class="tg-dibu"></div>
+	</div>
+</body>
+
+</html>

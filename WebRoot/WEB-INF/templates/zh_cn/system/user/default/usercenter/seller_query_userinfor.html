@@ -1,0 +1,44 @@
+<tr>
+<td align="right" width="20%">姓名：</td>
+<td align="left" width="80%"><input type="text" placeholder="姓名" value="$!obj.addr.trueName" data-key="trueName" data-id="$!obj.addr.id" onblur="ajax_update(this)"/> </td>
+</tr>
+<!-- <tr>
+<td align="right" width="20%">电话：</td>
+<td align="left" width="80%"><input type="text" placeholder="电话" value="$!obj.addr.telephone" data-key="telephone" data-id="$!obj.addr.id" onblur="ajax_update(this)"/></td>
+</tr> -->
+<tr>
+<td align="right" width="20%">手机：</td>
+<td align="left" width="80%"><input type="text" placeholder="手机" value="$!obj.addr.mobile" data-key="mobile" data-id="$!obj.addr.id" onblur="ajax_update(this)"/></td>
+</tr>
+<tr>
+<td align="right" width="20%">邮编：</td>
+<td align="left" width="80%"><input type="text" placeholder="邮编" value="$!obj.addr.zip" data-key="zip" data-id="$!obj.addr.id" onblur="ajax_update(this)"/></td>
+</tr>
+<tr>
+<td align="right" valign="top" width="20%">地址：</td>
+<td align="left" width="80%">$!{obj.addr.area.parent.parent.areaName} $!{obj.addr.area.parent.areaName} $!{obj.addr.area.areaName}  <input type="text" placeholder="详细地址" value="$!obj.addr.area_info" data-key="area_info" data-id="$!obj.addr.id" onblur="ajax_update(this)"/></td>
+</tr>
+
+<script>
+	//
+	function ajax_update(obj) {
+		var val = jQuery(obj).val();
+		jQuery.ajax({
+			type : 'POST',
+			url : '$!webPath/buyer/address_ajax.htm',
+			data : {
+				"id" : jQuery(obj).attr("data-id"),
+				"fieldName" : jQuery(obj).attr("data-key"),
+				"value" : jQuery(obj).val()
+			},
+			beforeSend : function() {
+
+			},
+			success : function(data) {
+				if (!data) {
+					return;
+				}
+			}
+		});
+	}
+</script>

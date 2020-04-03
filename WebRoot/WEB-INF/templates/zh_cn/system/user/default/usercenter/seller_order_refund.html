@@ -1,0 +1,59 @@
+<link href="$!webPath/resources/style/common/css/window.css" type="text/css" rel="stylesheet" />
+<script>
+#set($remain=$!CommUtil.subtract($!{obj.totalPrice},$!obj.refund))
+jQuery(document).ready(function(){
+  jQuery("#theForm").validate({
+	   rules:{
+		   refund:{number:true,max:$!remain}
+		   },
+	   messages:{
+	       refund:{number:"只能为数字",max:"超过可退金额"}
+	   }
+	});
+});
+</script>
+<form action="$!webPath/seller/order_refund_save.htm" method="post" id="theForm">
+  <table style="float:left;" width="100%" border="0" cellspacing="0" cellpadding="0" class="box_table">
+    <tr>
+      <td colspan="2" align="left" valign="top" >&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="100" align="right" valign="top">订单金额：
+        <input name="id" type="hidden" id="id" value="$!obj.id" />
+      </td>
+      <td align="left">$!obj.totalPrice</td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">已退金额：</td>
+      <td align="left">$!CommUtil.null2Double($!obj.refund)（可退:$!remain）</td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">退款金额：</td>
+      <td align="left"><input name="refund" type="text" id="refund" value="0" /></td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">退款方式：</td>
+      <td align="left">
+       #if($!obj.payment.mark=="xihaocard")
+       <input name="refund_type" type="radio" id="radio6" value="锡好卡" checked/>锡好卡
+       
+       #else
+       
+       <input name="refund_type" type="radio" id="radio1" value="预存款" checked="checked" />
+		预存款
+       
+       #end
+      </td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">操作说明：</td>
+      <td align="left"><textarea name="refund_log" id="refund_log" cols="35" rows="5"></textarea></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><span class="inputbtn">
+        <input name="" type="submit" value="提交" style="cursor:pointer;"/>
+        <input name="currentPage" type="hidden" id="currentPage" value="$!currentPage" />
+      </span></td>
+    </tr>
+  </table>
+</form>

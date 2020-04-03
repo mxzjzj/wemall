@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-wap-web-app-capable" content="yes">
+<meta name="apple-wap-web-app-status-bar-style" content="black-translucent">
+<title>$!config.title</title>
+<link href="$!webPath/resources/style/system/front/wap/css/style.css" rel="stylesheet" type="text/css">
+	<script src="$!webPath/resources/style/system/front/wap/js/jquery-1.10.2.min.js"></script>
+	<script src="$!webPath/resources/style/system/front/wap/js/jquery.validate.min.js"></script>
+</head>
+
+<body>
+<div class="phone_main">
+    	<!--头部-->
+            	<div class="user_hd">
+        	<dl>
+            	<dt>
+            		<!--<img  src="$!webPath/resources/style/system/front/wap/images/touxiang.png">-->
+					<img  src="$!{user.wechatPhoto}">
+            	</dt>
+                <dd><p class="name">$!{user.userName}</p>
+				 
+                <p>待付款：$!orderViewTools.query_user_order("order_submit")
+                </p>
+                <p>待收货：$!orderViewTools.query_user_order("order_shipping")
+                </p>
+                </dd>
+            </dl>
+       		 </div>
+        <!--导航-->
+		<div class="user_nav">
+          <div class="user-top"> 
+           <div class="user-t"><img src="$!webPath/resources/style/system/front/wap/images/dingdan.png"></img><span>我的订单</span><a href="$!webPath/buyer/order.htm"><span id="quanbu">查看全部订单</span><img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></a></div>
+          </div>
+		   <div class="user-mid">
+		   <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_submit'" class="user-mid-1"><img src="$!webPath/resources/style/system/front/wap/images/daifukuan.png"></img><p>待付款</p></div>
+		   <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_pay'" class="user-mid-2"><img src="$!webPath/resources/style/system/front/wap/images/daishouhuo.png"></img><p>待收货</p></div>
+		   <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_shipping'" class="user-mid-3"><img src="$!webPath/resources/style/system/front/wap/images/daifahuo.png"></img><p id="pp1">待发货</p></div>
+		  </div>
+		   <div class="user-top" style="margin-top:1rem;"> 
+           <div class="user-t"><img src="$!webPath/resources/style/system/front/wap/images/qianbao.png"></img><span>我的钱包</span><span id="quanbu"  style="display:none;">查看全部资产</span><img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div>
+          </div>
+		   <div class="user-mid">
+		   <div class="user-mid-1"><div class="p0">#if($!userInfo.xihaoBalance) $!userInfo.xihaoBalance #else 0 #end元</div><div class="p1p">锡好卡余额</div></div>
+		   <div class="user-mid-2"><div class="p0">#if($!userInfo.availableBalance) $!userInfo.availableBalance #else 0 #end元</div><div class="p1p">可用余额</div></div>
+		   <div class="user-mid-3"><div class="p0">#if($!userInfo.freezeBlance) $!userInfo.freezeBlance #else 0 #end元</div><div class="p1p">冻结余额</div></div>
+		  </div>
+		  <div onclick="javascript:window.location='$!webPath/buyer/account_password.htm'" class="user-bot bot"><img src="$!webPath/resources/style/system/front/wap/images/mima.png" ></img><span>修改密码</span></div>
+		  <div onclick="javascript:window.location='$!webPath//buyer/predeposit_xihao.htm'" class="user-bot"><img src="$!webPath/resources/style/system/front/wap/images/chongzhi.png" ></img><span>锡好卡充值</span></div>
+		  <div onclick="javascript:window.location='$!webPath/buyer/address.htm'" class="user-bot"><img src="$!webPath/resources/style/system/front/wap/images/dizhi.png"></img><span>新增/修改地址</span></div>
+		  <div onclick="javascript:window.location='$!webPath/wemall_logout.htm'" class="user-bot"><img src="$!webPath/resources/style/system/front/wap/images/tuichu.png"></img><span>退出当前账号</span></div>
+		  </div>
+			<!-- <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_submit'"><img src="$!webPath/resources/style/system/front/wap/images/fukuan.png"></img>我的待付款<img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div> -->
+			<!-- <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_pay'"><img src="$!webPath/resources/style/system/front/wap/images/fahuo.png"></img>我的待发货<img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div> -->
+			<!-- <div onclick="javascript:window.location='$!webPath/buyer/order.htm?order_status=order_shipping'"><img src="$!webPath/resources/style/system/front/wap/images/shouhuo.png"></img>我的待收货<img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div> -->
+			<!-- </div> -->
+			<!-- <div class="user-bottom"> -->
+			<!-- <div onclick="javascript:window.location='$!webPath/buyer/account_password.htm'"><img src="$!webPath/resources/style/system/front/wap/images/mima.png"></img>修改密码<img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div> -->
+			<!-- <div onclick="javascript:window.location='$!webPath/buyer/address.htm'"><img src="$!webPath/resources/style/system/front/wap/images/dizhi.png"></img>新增/修改地址<img class="jiantou" src="$!webPath/resources/style/system/front/wap/images/jiantou.png"></img></div> -->
+			<!-- <div  onclick="javascript:window.location='$!webPath/wemall_logout.htm'" class="tuichu">退出当前账号</div> -->
+			<!-- </div> -->
+              
+              
+        </div>
+        <!--收藏商品-->
+        <div class="collect">
+            <script>
+            	function shouchang(id,obj){
+					jQuery(".tab ul li").each(function(index, element) {
+                        jQuery(element).removeClass("this");
+                    });
+					jQuery(obj).parent().addClass("this");
+					jQuery(".collect_list ul").each(function(index, element) {
+                        jQuery(element).hide();
+                    });
+					jQuery("#"+id).show();
+				}
+				
+				jQuery(function(){
+					jQuery("#cai").click();
+				});
+					
+            </script>
+             <!-- 我的商品-->
+            <div class="collect_list">
+            	<ul id="favorite_goods" class="collect_ul">
+                </ul>
+                <!-- 我的店铺 -->
+                <ul class="collect_store" id="favorite_store" style="display:none;">
+               	</ul>
+			</div>
+		</div>
+$!httpInclude.include("/footer.htm")
+</body></html>

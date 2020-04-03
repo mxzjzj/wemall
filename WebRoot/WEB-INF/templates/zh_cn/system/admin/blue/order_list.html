@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link href="$!webPath/resources/style/system/manage/$!{config.websiteCss}/template.css"  rel="stylesheet" type="text/css"/>
+<link  href="$!webPath/resources/style/common/css/jquery-ui-1.8.22.custom.css" type=text/css rel=stylesheet>
+<script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+<script src="$!webPath/resources/js/jquery.validate.min.js"></script>
+<script src="$!webPath/resources/js/jquery.shop.common.js"></script>
+<script src="$!webPath/resources/js/jquery.poshytip.min.js"></script>
+<script src="$!webPath/resources/js/jquery-ui-1.8.21.js"></script>
+<script src="$!webPath/resources/js/jquery.zh.cn.js"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery('#beginTime').datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  jQuery('#endTime').datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+});
+
+function jdHandOrder(id){
+	jQuery.post("$!webPath/admin/jd_hand_order.htm",
+		  {
+		      "id": id
+		  },
+		  function(data)
+		  {
+			  $("#sendjd_"+id).css('display','none');
+			  $("a[name='jdorders_"+id+"']").each(function(i){
+					    $(this).text(data.info.split("：")[1]);
+			  });
+			  
+			  alert(data.info);
+		  },
+		  "json"); 
+	
+}
+
+</script>
+</head>
+<body>
+
+<div class="cont">
+  <h1 class="seth1">订单管理</h1>
+  <div class="settab"><span class="tab-one"></span> <span class="tabs"> <a href="javascript:void(0);" class="this">
+  	#set($base_status="所有订单")   
+  	#if($!order_status==0)
+       #set($base_status="已取消")
+       #set($selected_0="selected")  
+    #end
+    #if($!order_status==10)
+       #set($base_status="待付款")
+        #set($selected_10="selected")  
+    #end
+    #if($!order_status==20)
+       #set($base_status="待发货")
+       #set($selected_20="selected")  
+    #end
+    #if($!order_status==30)
+       #set($base_status="已发货")
+       #set($selected_30="selected")  
+    #end
+    #if($!order_status==40)
+       #set($base_status="已收货")
+       #set($selected_40="selected")  
+     #end
+     #if($!order_status==50)
+       #set($base_status="已完成") 
+       #set($selected_50="selected")         
+     #end                
+  $!base_status
+  </a></span> <span class="tab-two"></span></div>
+  <form action="$!webPath/admin/order_list.htm" method="post" id="queryForm" >
+  <div class="orders">
+    <ul>
+      <li> <span>订单状态</span><span class="ordersel">
+        <select name="order_status" id="order_status">
+          <option value="">所有订单</option>
+          <option value="10" $!selected_10>待付款</option>
+          <option value="20" $!selected_20>待发货</option>
+          <option value="30" $!selected_30>已发货</option>
+          <option value="40" $!selected_40>已收货</option>
+          <option value="50" $!selected_50>已完成</option>
+          <option value="0" $!selected_0>已取消</option>
+        </select>
+      </span>
+     <span>支付方式</span>
+      <span>
+        <select name="payment" id="payment">
+          <option value="">所有支付方式</option>
+          <option value="alipay">支付宝</option>
+          <option value="wxcodepay">微信扫码支付</option>
+      		<option value="weixin_wap">微信公众号支付</option>
+          <option value="chinabank">网银在线</option>
+          <option value="bill">快钱</option>
+          <option value="tenpay">财付通</option>
+          <option value="outline">线下支付</option>
+          <option value="balance">预付款支付</option>
+        </select>
+        </span>
+      <span>检索</span><span>
+        <select name="type" id="type">
+          <option value="buyer">会员名</option>
+          <option value="order">订单号</option>
+          <option value="trueName">收件人姓名</option>
+          <option value="mobile">手机号码</option>
+          <option value="store">店铺名称</option>
+          <!-- <option value="goodsName">商品名</option> -->
+        </select>
+        </span>
+         <span class="order_input size1">
+        <input name="type_data" type="text" id="type_data" />
+      </span> </li>
+      <li> <span>下单时间</span><span class="order_input size2">
+        <input name="beginTime" type="text" id="beginTime"  readonly="readonly"/>
+        </span><span>—</span><span class="order_input size2">
+        <input name="endTime" type="text" id="endTime" readonly="readonly" />
+        </span> <span>订单金额</span><span class="order_input size2">
+        <input name="begin_price" type="text" id="begin_price" />
+        </span><span>—</span><span class="order_input size2">
+        <input name="end_price" type="text" id="end_price" />
+        </span> <span class="btn_search">
+        <input name="" type="submit"  value="搜索" style="cursor:pointer;"/>
+      </span> </li>
+    </ul>
+  </div>
+  </form>
+  <form action="$!webPath/admin/order_list.htm" method="post" id="ListForm" >
+    <div class="allshop_table">
+      #foreach($obj in $objs)
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr style="background: #if($!config.websiteCss=='blue') #2A7AD2 #end 
+            #if($!config.websiteCss=='black')#333 #end; height:30px; color:#FFF">
+        <td colspan=4  style="border-left-style: none !important;border-right-style: none !important"><span>店铺名称:$!obj.store.store_name</span>
+          <span style="margin-left:20px"> 订单号:$!obj.order_id</span>  <span style="margin-left:20px">下单时间:$!CommUtil.formatLongDate($!obj.addTime)</span>
+          <span style="margin-left:20px">买家名称:$!obj.user.userName</span> 
+                 #if($!obj.order_status==0)
+		            #set($status="已取消")
+		         #end
+		         #if($!obj.order_status==10)
+		            #set($status="待付款")
+		         #end
+		         #if($!obj.order_status==15)
+		            #set($status="线下支付待审核")
+		         #end
+		         #if($!obj.order_status==16)
+		            #set($status="货到付款待发货")
+		         #end
+		            #if($!obj.order_status==20)
+		            #set($status="已付款")
+		            #end
+		            #if($!obj.order_status==30)
+		            #set($status="已发货")        
+		            #end                
+		            #if($!obj.order_status==40)
+		            #set($status="已收货")
+		            #end
+		            #if($!obj.order_status==50)
+		            #set($status="已完成,已评价")                                              
+		            #end
+		            #if($!obj.order_status==60)
+		            #set($status="已结束")                                              
+	            #end   
+          <span style="margin-left:20px">订单状态: $!status</span>
+            #set($payment="未支付")
+            #if($!obj.payment.mark=="alipay")
+              #set($payment="支付宝")
+            #end
+            #if($!obj.payment.mark=="alipay_wap")
+              #set($payment="手机网页支付宝")
+            #end
+            #if($!obj.payment.mark=="bill")
+              #set($payment="快钱")
+            #end                 
+            #if($!obj.payment.mark=="chinabank")
+              #set($payment="网银在线")
+            #end       
+            #if($!obj.payment.mark=="outline")
+              #set($payment="线下支付")
+            #end                  
+            #if($!obj.payment.mark=="balance")
+              #set($payment="预存款支付")
+            #end 
+            #if($!obj.payment.mark=="payafter")
+              #set($payment="货到付款")
+            #end
+            #if($!obj.payment.mark=="paypal")
+              #set($payment="paypal")
+            #end
+			  #if($!obj.payment.mark=="xihaocard")
+                  #set($payment="锡好卡支付")
+                  #end
+            #if($!obj.payment.mark=="wxcodepay")
+              #set($payment="微信扫码支付")
+            #end
+            #if($!obj.payment.mark=="weixin_wap")
+              #set($payment="微信公众号支付")
+            #end
+           <span style="margin-left:20px">支付方式:$!payment</span> </td>
+       <!--  <td  style="border-left-style: none !important;border-right-style: none !important" width="15%">订单号</td>
+        <td  style="border-left-style: none !important;border-right-style: none !important" width="10%">买家名称</td>
+        <td   style="border-left-style: none !important;border-right-style: none !important" width="15%">下单时间</td>
+        <td  style="border-left-style: none !important;border-right-style: none !important"  width="8%">订单总额</td>
+        <td  style="border-left-style: none !important;border-right-style: none !important" width="10%">支付方式</td>
+        <td  style="border-left-style: none !important;border-right-style: none !important" width="8%">订单状态</td>
+        <td  style="border-left-style: none !important;border-right-style: none !important"  width="30%" align="center">操作</td> -->
+      </tr>
+      <tr>
+        <!-- <td>$!obj.store.store_name</td>
+        <td>$!obj.order_id</td>
+        <td>$!obj.user.userName</td>
+        <td>$!CommUtil.formatLongDate($!obj.addTime)</td>
+        <td>$!obj.totalPrice</td>
+        <td align="center" class="blue xiahua"><a href="$!webPath/admin/order_view.htm?id=$!obj.id">查看</a></td> -->
+       
+        <td  class="order_td" style="width: 660px;">
+          #set($initPrice=0)
+          #foreach($gc in $obj.gcs)
+             #set($originalPrice=$!{gc.goods.originalPrice} *  $!{gc.count})
+             #set($originalPrice_new=$!{originalPrice} + $!{initPrice})
+             #set($initPrice=$!{originalPrice})
+             
+          <ul>
+              #if($!gc.goods.goods_main_photo)
+                 #set($img="$!{gc.goods.goods_main_photo.path}/$!{gc.goods.goods_main_photo.name}")
+				  #if($img.substring(0,4)!="http")
+												#set($img="$!webPath/$img")
+											#end         
+              #else
+                 #set($img="$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+              #end
+           	  <li class="li_05"><a href="$!webPath/goods_$!{gc.goods.id}.htm" target="_blank" class="blue"><img src="$!img" width="60" height="60" /></a>			
+	          </li>
+	          <li class="li_06"><p class="p_a"> <a href="$!webPath/goods_$!{gc.goods.id}.htm" target="_blank" class="blue">$!{gc.goods.goods_name}</a></p>
+               <span>购买数量：$!gc.count</span>
+               <span>购买价格：<strong class="orange">¥</strong><strong style="color:#F90">#if($!gc.goods.group_buy==2)$!{gc.goods.group_goods.gg_price}#else $!{gc.goods.goods_current_price}#end</strong></span>
+                #if($!gc.goods.goodsSkuId)
+      		    	<span style="color: #7755AA;">京东子订单号:
+      		    		<a  name="jdorders_$!obj.id">$!obj.JDOrderId</a>
+      		    	</span>
+               	#end
+               	
+               </li>
+          </ul>
+          #end
+        </td>
+        <td>
+            <ul class="ul_03">   
+     	       <li>   
+     	         <table  class="table_o1" width="100%" cellspacing="0" cellpadding="0"  style="border:0px">
+           	      <tbody>
+           	        <tr>
+	           	        <td style="border:none" width="45%" align="right"><font color="#55555">订单总额：</font>
+	           	        </td>
+	           	        <td style="border:none" align="left"><strong class="orange" style="padding-right:10px;">¥$!{obj.totalPrice}</strong>
+	           	        </td>
+           	       </tr>
+           		   <tr><td style="border:none" align="right"><font color="#55555">运费：</font></td>
+	           	        <td style="border:none" align="left"><font color="#55555">¥$!CommUtil.null2Float($!{obj.ship_price})#if($!obj.transport)[$!{obj.transport}]#end</font>
+	           	        </td>
+           	       </tr>
+           	      <tr><td hide style="border:none" align="right"><!-- <font color="#55555">总协议价：</font> --></td>
+           	          <td style="border:none" align="left"><!-- $!{originalPrice_new} --></td>
+           	      </tr>
+	      		 </tbody>
+	      		 </table>
+           	  </li>
+       	    </ul>
+        </td>
+		<td>
+			<ul id="shippingAddressView11585" class="ul_03">
+				<li class="li_pot" objid="11585" mark="name">
+					<table  class="table_o1" width="100%" cellspacing="0" cellpadding="0" style="border: 0px">
+						<tbody>
+							<tr>
+								<td style="border: none" width="45%" align="right">收货人：</td>
+								<td style="border: none" align="left">$!obj.addr.trueName</td>
+							</tr>
+							<tr>
+								<td style="border: none" align="right">联系电话：</td>
+								<td style="border: none" align="left">$!{obj.addr.mobile}</td>
+							</tr>
+							<tr>
+								<td style="border: none" align="right">所在地区：</td>
+								<td style="border: none" align="left">$!{obj.addr.area.parent.parent.areaName} $!{obj.addr.area.parent.areaName} $!{obj.addr.area.areaName}</td>
+							</tr>
+						</tbody>
+					</table>
+				</li>
+			</ul>
+		</td>
+		<td style="width:170px">
+		    	   <ul id="shippingDataView11588" class="ul_03">
+		        	  <li class="li_pot" objid="11588" mark="name">
+		        	    <table  class="table_o1" width="100%" cellspacing="0" cellpadding="0" style="border: 0px">
+		        	      <tbody>
+		        	       #if(!$!obj.JDOrderId && $!obj.store.id == 30 && ($!obj.order_status>=20 && $!{obj.order_status}<50 && $!remain>0))
+		        	      <tr id="sendjd_$!obj.id">
+		        	      <td colspan=2 style="border:0px">
+		        	         <span><a href="javascript:void(0);" onclick="jdHandOrder($!obj.id)"><strong class="orange">发送京东订单</strong></a></span>
+		        	      </td>
+		        	      </tr>
+		        	      #end
+		        	      <tr>
+		        	        <td style="border:none" width="45%" align="right">配送方式：</td>
+		        	        <td style="border:none" align="left">$!{obj.ship.shipping_name}</td>
+		        	      </tr>
+		
+		        		 <!--  <tr>
+		        	        <td style="border:none" align="right">发货时间：</td>
+		        	        <td style="border:none" align="left"></td>
+		        	      </tr> -->
+		        	     
+		     		      <tr>
+		        	        <td style="border:none" align="right">物流公司：</td>
+		        	        <td style="border:none" align="left"></td>
+		        	      </tr>
+		        	     
+		        		  <tr>
+		        	        <td style="border:none" align="right">物流单号：</td>
+		        	        <td style="border:none" align="left"></td>
+		        	      </tr>
+		    		      </tbody>
+		    		      </table>
+		       			<div class="xx" style="display: none;">
+		       			  <span>
+		       			    <font color="#55555">物流详情</font>
+		       			  </span>
+		       			  <i>
+		       			    <img src="http://www.xihao99.com/ushare/image/admin_pc_page/user_left.png">
+		       			  </i>
+		          		  <table id="shippingData11588" width="100%" cellspacing="0" cellpadding="0" border="0">  <tr>
+				    <td>
+				<!--       <font color="#55555">暂无物流详情!</font> -->
+				      <font color="#55555">暂无信息</font>
+				    </td>
+				  </tr>
+				</table>
+		        		</div>
+		        	  </li>
+		      	    </ul>
+		          	  </td>
+      </tr>
+    </table>
+      #end
+  </div>
+  
+  
+  
+  <div class="fenye">
+    <input name="end_price" type="hidden" id="end_price" value="$!end_price" />
+    <input name="begin_price" type="hidden" id="begin_price" value="$!begin_price" />
+    <input name="endTime" type="hidden" id="endTime" value="$!endTime" />
+    <input name="beginTime" type="hidden" id="beginTime" value="$!beginTime" />
+    <input name="type_data" type="hidden" id="type_data" value="$!type_data" />
+    <input name="type" type="hidden" id="type" value="$!type" />
+    <input name="order_status" type="hidden" id="order_status" value="$!order_status" />
+    <input name="currentPage" type="hidden" id="currentPage" value="$!currentPage" />
+    $!gotoPageFormHTML</div>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<meta
+	content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no"
+	name="viewport">
+<meta content="yes" name="apple-wap-web-app-capable">
+<meta content="black-translucent"
+	name="apple-wap-web-app-status-bar-style">
+<title></title>
+<link href="$!webPath/resources/style/system/front/wap/css/style.css"
+	rel="stylesheet" type="text/css">
+<script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+<script src="$!webPath/resources/js/DataLazyLoad.min.js"></script>
+<script src="$!webPath/resources/js/jquery.lazyload.js"></script>
+
+<script
+	src="$!webPath/resources/style/system/front/wap/js/TouchSlide.1.1.js"></script>
+<script
+	src="$!webPath/resources/style/system/front/wap/js/jquery.SuperSlide.2.1.1.js"></script>
+	
+	
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #f1f1f1;
+	font-size: 14px;
+}
+
+ul li {
+	list-style: none;
+	background-color: white
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+b {
+	font-size: 0.8rem;
+	color: red;
+}
+
+.nongye-dv1 {
+	display: flex;
+	/*justify-content: space-around;*/
+	flex-wrap: wrap;
+}
+
+.nongye-dv1>div {
+	font-size: 1rem;
+	margin: 0.5rem;
+	width: calc(50% - 1.5rem);
+}
+
+.jiu {
+	width: 100%
+}
+
+.jiu1 {
+	width: 100%;
+}
+
+.gwc {
+	width: 1rem;
+	float: right;
+	margin-right: 0.5rem;
+}
+</style>
+</head>
+
+<body>
+	<div class="focusBox" id="focusBox">
+		<script src="$!webPath/advert_invoke.htm?id=262157"></script>
+	</div>
+	$!httpInclude.include("/wap/floor_industry.htm")
+
+	<script>
+    jQuery(document).ready(function() {
+        jQuery(".sale_two_img img").lazyload({
+            effect: "fadeIn",
+            width: 150,
+            height: 150
+        });
+        //团购图片轮播懒加载
+        jQuery(".goods_tab img").lazyload({
+            effect: "fadeIn",
+            width: 210,
+            height: 210
+        });
+        //楼层懒加载
+        jQuery(".nongye-dv1 img").lazyload({
+            effect: "fadeIn",
+            width: 147,
+            height: 147
+        });
+        jQuery(".index_sales_left>h3>ul>li").mouseover(function() {
+            jQuery(".index_sales_left>h3>ul>li").removeClass("this");
+            jQuery(this).addClass("this");
+            jQuery(".index_sales_box>[class^=index_sales_]").hide();
+            var div_index = jQuery(this).attr("div_index");
+            jQuery(".index_sales_" + div_index).show();
+        });
+
+        var size = "5";
+        if (size > 0) {
+            jQuery("html").scrollTop(0); //刷新页面返回顶部	
+            //Call DataLazyLoad
+            jQuery("#floors .nongye-dv1").DataLazyLoad({
+                load: function(page, unLocked) {
+                    var html = '';
+                    var max = 5 + 1;
+                    var count = page - 1;
+                    var id = jQuery(".nongye-dv1[count=" + count + "]").attr("id");
+                    var load_url = jQuery(".nongye-dv1[count=" + count + "]").attr("load_url");
+                    //Generate the data
+                    jQuery.get("$!webPath/" + load_url, {
+                        "id": id,
+                        "count": count
+                    }, function(data) {
+                        html += data;
+                        jQuery(html).appendTo('#floors .nongye-dv1[count=' + count + ']');
+                        //鼠标经过楼层tab时
+                        jQuery(".floorul li").mouseover(function() {
+                            var store_gc = jQuery(this).attr("store_gc");
+                            jQuery(".floorul li[store_gc=" + store_gc + "]").css("cursor", "pointer").removeClass("this");
+                            jQuery(this).addClass("this");
+                            var id = jQuery(this).attr("id");
+                            jQuery(".ftab[store_gc=" + store_gc + "]").hide();
+                            jQuery(".ftab[store_gc=" + store_gc + "][id=" + id + "]").show();
+                        });
+                        //Check whether to end
+                        page = page >= max ? 0 : page + 1;
+                        //To prevent repeated load, The first parameter to the next page, No page is 0
+                        unLocked(page);
+                    }, "text");
+                }
+            });
+        } else {
+            //jQuery("#toolbar").load("toolbar.htm");	 
+        }
+
+        jQuery(window).scroll(function() {
+            var top = jQuery(document).scrollTop();
+            //楼层导航跟随
+            jQuery(".back_floor").css("display", "none");
+            jQuery("li[floor_id^=floor_] b").css("display", "block");
+            jQuery("div[id^=floor_]").each(function() { //循环每一个楼层
+                var floor_top = jQuery(this).offset().top - top;
+                if (floor_top <= 580 && floor_top >= 0) { //如果到达一个位置
+                    var floor_id = jQuery(this).attr("id");
+                    if (jQuery("li[floor_id=" + floor_id + "] b").css("display", "none")) {
+                        jQuery(".back_floor").css("display", "block");
+                    }
+                }
+            });
+        });
+
+
+    });
+    </script>
+</body>
+
+</html>

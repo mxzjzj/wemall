@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+<title>$!config.title</title>
+<link href="$!webPath/resources/style/system/front/wap/css/style.css" rel="stylesheet" type="text/css">
+<script src="$!webPath/resources/style/system/front/wap/js/jquery-1.10.2.min.js"></script>
+<script src="$!webPath/resources/style/system/front/wap/js/jquery.validate.min.js"></script>
+<script>
+/* jQuery(document).ready(function(){
+  jQuery("#theForm").validate({
+       rules: {
+			old_password:{required:true},
+			new_password:{required:true,minlength:6,maxlength:20},
+			new_password1:{required:true,equalTo:"#new_password"}
+			},
+	   messages: {
+		    old_password:{required:"当前密码不能为空"},
+			new_password:{required:"新密码不能为空",minlength:"新密码不能少于{0}位",maxlength:"新密码不能大于{0}位"},
+			new_password1:{required:"重复密码不能为空",equalTo:"两次密码输入不一样"}
+		}
+  });
+}); */
+
+jQuery(function(){
+	jQuery("#theForm").validate({
+    errorPlacement: function(error, element){
+		   jQuery("#note").show();
+		   jQuery("#note").html("");
+           error.appendTo(jQuery("#note"));
+    },
+	rules: {
+		itemNumber:{
+			required:true
+		},
+		item_password:{
+			required:true
+		}
+	},
+	messages: {
+		itemNumber:{
+			required:"锡好卡卡号不能为空"
+		},
+		item_password:{
+			required:"锡好卡密码不能为空"
+		}
+	},
+	});
+});
+function saveForm(){
+	jQuery.ajax({
+		type : 'POST',
+		url : '$!webPath/buyer/predeposit_xihao_sure.htm',
+		async : false,
+		data : {
+			"itemNumber" : jQuery("#itemNumber").val(),
+			"itemPassword" : jQuery("#itemPassword").val()
+		},
+		success : function(data) {
+			if (data == "success") {
+				alert("锡好卡充值成功!");
+				window.location.reload();
+			} else {
+				alert("卡号或者密码不正确,请确认!");
+				return;
+			}
+		}
+	});
+}
+	
+</script>
+</head>
+<body>
+
+<div class="main">
+  
+  	<div class="user_bar">
+		<a class="back" href="$!webPath/buyer/index.htm">
+			<img src="$!webPath/resources/style/system/front/wap/images/back_black.png" width="25" height="25">
+		</a>
+		<span class="fl">锡好卡充值</span>
+		<a class="edit fr" href="$!webPath/wap/index.htm">
+			<img src="$!webPath/resources/style/system/front/wap/images/home.png" width="25" height="25">
+		</a>
+	</div>
+	
+	
+	<div class="info_form">
+	  <form action="$!webPath/buyer/predeposit_xihao_sure.htm" id="theForm" name="theForm" method="post" novalidate="novalidate">
+	  <div style="height:49px;" class="mt50"></div>
+	  <ul>
+	    <li><span class="form_title">锡好卡卡号</span><span class="form_size300">
+	      <input type="text" id="itemNumber" name="itemNumber">
+	      </span>
+	    </li>
+	    <li><span class="form_title">锡好卡密码</span><span class="form_size300">
+	      <input type="password" id="itemPassword" name="itemPassword">
+	      </span>
+	    </li>
+	  </ul><div class="red_submit">
+	      	<a onclick="saveForm();" href="javascript:void(0);">确定</a>
+	        </div>
+	  </form>
+	</div>
+	
+	<div style="display:none" id="note" class="note"></div>
+	<div style="display:none" class="brand_class_opcity"></div>
+  	
+  
+   $!httpInclude.include("/footer.htm")
+   
+</div>
+
+</body>
+</html>

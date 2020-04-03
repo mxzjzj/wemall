@@ -1,0 +1,105 @@
+<!--底部-->
+		<div class="phone_foot">
+			<div class="foot_top" style="display:none">
+				<span class="fl">
+				
+				#if($!user)
+				<span>
+					$!CommUtil.substring("$!{user.userName}",5)您好</span><b>|</b>
+					<span><a  href="$!webPath/wemall_logout.htm">退出</a> </span>
+				#else 
+					<span><a class="log" href="$!webPath/user/login.htm">登录</a></span> <b>|</b>
+					<span><a class="log"  href="$!webPath/register.htm">注册</a> </span>
+				#end
+				</span>
+						<span
+					class="fr"><a href="#">TOP</a></span>
+			</div>
+			<div class="layer">
+		
+		<div class="layer_show" id="show"  >
+			<ul>
+				<li><a href="$!webPath/wap/index.htm"><img class="im1"
+						src="$!webPath/resources/style/system/front/wap/images/shouye-.png"
+						width="20" height="20">
+						<img class="im2"
+						src="$!webPath/resources/style/system/front/wap/images/shouye.png"
+						width="20" height="20"><p>首页</p></a></li>
+				<li><a href="javascript:teluser();"><img class="im3"
+						src="$!webPath/resources/style/system/front/wap/images/kefu.png"
+						width="20" height="20">
+						<img class="im4"
+						src="$!webPath/resources/style/system/front/wap/images/kefu-.png"
+						width="20" height="20"><p>客服</p></a></li>
+						<li><a href="$!webPath/goodsclass.htm"><img class="im5"
+						src="$!webPath/resources/style/system/front/wap/images/fenlei.png"
+						width="20" height="20">
+						<img  class="im6"
+						src="$!webPath/resources/style/system/front/wap/images/fenlei-.png"
+						width="20" height="20"><p>分类</p></a></li>
+				<li><a href="$!webPath/goods_cart1.htm"><img class="im7"
+						src="$!webPath/resources/style/system/front/wap/images/gouwuche.png"
+						width="20" height="20">
+						<img class="im8"
+						src="$!webPath/resources/style/system/front/wap/images/gouwuche-.png"
+						width="20" height="20"><p>购物车</p></a></li>
+				<li><a href="$!webPath/buyer/index.htm"><img class="im9"
+						src="$!webPath/resources/style/system/front/wap/images/wode.png"
+						width="20" height="20">
+						<img class="im10"
+						src="$!webPath/resources/style/system/front/wap/images/wode1.png"
+						width="20" height="20"><p>我的</p></a></li>
+			</ul>
+			<div class="show_bg"></div>
+		</div>
+	</div>
+	<script>
+	$(".im1,.im3,.im5,.im7,.im9").show();
+    $(".im2,.im4,.im6,.im8,.im10").hide();
+
+   $(".im3").click(function() {
+	$(".im1").hide();
+	$(".im2").show();
+	$(".im3").hide();
+	$(".im4").show();
+})
+$(".im5").click(function() {
+	$(".im1").hide();
+	$(".im2").show();
+	$(".im5").hide();
+	$(".im6").show();
+})
+$(".im7").click(function() {
+	$(".im1").hide();
+	$(".im2").show();
+	$(".im7").hide();
+	$(".im8").show();
+})
+$(".im9").click(function() {
+	$(".im1").hide();
+	$(".im2").show();
+	$(".im9").hide();
+	$(".im10").show();
+})
+	</script>
+			<div class="foot_nav" style="display:none;">
+				<a class="this" href="$!webPath/wap/index.htm">触屏版</a>
+				<a href="$!webPath/index.htm">电脑版</a> <a
+					href="javascript:void(0);">客户端</a>
+			</div>
+	     	 <div class="foot_nav" style="display:none;">©2014-2015 无锡太湖云电商网络科技发展有限公司   版权所有</div>
+			 
+		</div>
+<script>
+function teluser()
+{
+ 
+window.location.href = 'tel://4006699782';
+ 
+}
+
+</script>
+		<!--按钮-->
+	</div>
+	
+	

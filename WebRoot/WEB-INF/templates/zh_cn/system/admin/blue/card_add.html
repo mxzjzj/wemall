@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link href="$!webPath/resources/style/system/manage/$!{config.websiteCss}/template.css"  rel="stylesheet" type="text/css"/>
+<link  href="$!webPath/resources/style/common/css/jquery-ui-1.8.22.custom.css" type=text/css rel=stylesheet>
+<script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+<script src="$!webPath/resources/js/jquery.validate.min.js"></script>
+<script src="$!webPath/resources/js/jquery.shop.common.js"></script>
+<script src="$!webPath/resources/js/jquery.poshytip.min.js"></script>
+<script src="$!webPath/resources/js/jquery-ui-1.8.21.js"></script>
+<script src="$!webPath/resources/js/jquery.zh.cn.js"  charset="utf-8"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery("#theForm").validate({
+	errorPlacement: function(error, element) {  
+       error.appendTo(element.parent());  
+    },						  
+    rules:{
+     cardName:{required:true}
+	 },
+    messages:{
+        cardName:{required:"活动卡标题不能为空"}
+	}
+  });
+ 	//改变系统提示的样式
+  jQuery("span .w").mousemove(function(){
+	var id=jQuery(this.parentNode).attr("id");
+	if(id="nothis"){
+	   jQuery(this.parentNode).attr("id","this")
+	}
+  }).mouseout(function(){
+     var id=jQuery(this.parentNode).attr("id");
+	 if(id="this"){
+	   jQuery(this.parentNode).attr("id","nothis")
+	 }
+  });
+
+  jQuery("#cardImage").change(function(){
+    jQuery("#textfield1").val(jQuery("#cardImage").val());
+  })
+  //
+  jQuery('#beginDate').attr("readonly","readonly").datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  jQuery('#endDate').attr("readonly","readonly").datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+});
+
+function saveForm(){
+	jQuery("#theForm").submit();
+}
+</script>
+</head>
+<body>
+<form action="$!webPath/admin/card_save.htm" method="post" enctype="multipart/form-data" name="theForm" id="theForm">
+  <div class="cont">
+    <h1 class="seth1">活动卡管理</h1>
+    <div class="settab"><span class="tab-one"></span> <span class="tabs"><a href="$!webPath/admin/card_list.htm">活动卡列表</a> | <a href="$!webPath/admin/card_add.htm" class="this">新增活动卡</a></span> <span class="tab-two"></span></div>
+    <div class="setcont" id="base">
+      <ul class="set1">
+        <li><strong class="orange fontsize20">*</strong>活动卡名称
+          <input name="id" type="hidden" id="id" value="$!card.id" />
+        </li>
+        <li><span class="webname">
+          <input name="cardName" type="text" id="cardName" value="$!card.cardName" />
+          </span></li>
+      </ul>
+        <ul id="cardImageUl" class="set1">
+            <li><strong class="orange fontsize20">*</strong>活动卡图片：</li>
+            <li>
+              <span class="size13" ><input name="textfield" type="text" id="textfield1" />
+              </span>
+              <span class="filebtn"><input name="button" type="button" id="button1" value=""/>
+              </span>
+              <span style="float:left;" class="file" >
+                <input name="cardImage" type="file" id="cardImage" size="30"/>
+              </span>
+              <span class="preview"> <img src="$!webPath/resources/style/system/manage/blue/images/preview.jpg" width="25" height="25"  id="logoShow" style="cursor:help"/> </span> <span id="nothis"><strong class="q"></strong><strong class="w">最佳尺寸:980px * 340px</strong><strong class="c"></strong></span>
+              <span id="nothis"><strong class="q"></strong><strong class="w">最佳尺寸93*33，支持格式gif,jpg,jpeg,png</strong><strong class="c"></strong></span>
+              <div class="bigimgpre" id="logoImg" style="display:none;"><img src="$!webPath/$!card.cardImage.path/$!card.cardImage.name"/>
+              </div>
+            </li>
+        </ul>
+        <ul class="set1">
+            <li><strong class="orange fontsize20">*</strong> 活动卡类型：</li>
+            <li>
+                <span class="webname">
+                  #if ($!card) $!card.cardType.typeName
+                        #else
+                          <span class="webnamesec">
+                            <select id="cardTypeId" name="cardTypeId">
+                              <option value="">请选择...</option>
+                              #foreach ($obj in $cardTypes)
+                                <option value="$!obj.id">$!obj.typeName</option>
+                              #end
+                            </select>
+                          </span>
+                        #end
+                </span>
+            </li>
+        </ul>
+        <ul class="set1">
+            <li><strong class="orange fontsize20">*</strong>活动卡面值
+            </li>
+            <li><span class="webname">
+          <input name="cardAmount" type="text" id="cardAmount" value="$!card.cardAmount" />
+          </span></li>
+        </ul>
+      <ul class="set1">
+        <li><strong class="orange fontsize20">*</strong>有效期从</li>
+        <li> <span class="webname">
+          <input name="beginDate" type="text" id="beginDate" value="$!dateUtil.formatDateShort($!card.beginDate)" size="25" />
+          </span>
+            <span id="nothis"><strong class="q"></strong><strong class="w">不选择则立即有效</strong><strong class="c"></strong></span>
+        </li>
+      </ul>
+      <ul class="set1">
+        <li><strong class="orange fontsize20">*</strong>有效期至：</li>
+        <li> <span class="webname">
+          <input name="endDate" type="text" id="endDate" value="$!dateUtil.formatDateShort($!card.endDate)" size="25" />
+          </span>
+            <span id="nothis"><strong class="q"></strong><strong class="w">不选择则立即有效</strong><strong class="c"></strong></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="submit">
+    <input name="" type="button" value="保存" style="cursor:pointer;" onclick="saveForm();"/>
+  </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link href="$!webPath/resources/style/system/manage/$!{config.websiteCss}/template.css"  rel="stylesheet" type="text/css"/>
+<link  href="$!webPath/resources/style/common/css/jquery-ui-1.8.22.custom.css" type=text/css rel=stylesheet>
+<script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+<script src="$!webPath/resources/js/jquery.validate.min.js"></script>
+<script src="$!webPath/resources/js/jquery.shop.common.js"></script>
+<script src="$!webPath/resources/js/jquery.poshytip.min.js"></script>
+<script src="$!webPath/resources/js/jquery-ui-1.8.21.js"></script>
+<script src="$!webPath/resources/js/jquery.zh.cn.js"  charset="utf-8"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery("#theForm").validate({
+	errorPlacement: function(error, element) {  
+       error.appendTo(element.parent());  
+    },						  
+    rules:{
+      count:{required:true}
+	 }
+  });
+ 	//改变系统提示的样式
+  jQuery("span .w").mousemove(function(){
+	var id=jQuery(this.parentNode).attr("id");
+	if(id="nothis"){
+	   jQuery(this.parentNode).attr("id","this")
+	}
+  }).mouseout(function(){
+     var id=jQuery(this.parentNode).attr("id");
+	 if(id="this"){
+	   jQuery(this.parentNode).attr("id","nothis")
+	 }
+  });
+
+});
+
+function saveForm(){
+	jQuery("#theForm").submit();
+}
+</script>
+</head>
+<body>
+<form action="$!webPath/admin/card_item_publish_do.htm" method="post" enctype="multipart/form-data" name="theForm" id="theForm">
+  <input id="cardId" name="cardId" type="hidden" value="$!card.id"/>
+  <div class="cont">
+    <h1 class="seth1">活动卡管理</h1>
+    <div class="settab"><span class="tab-one"></span> <span class="tabs"><a href="$!webPath/admin/card_list.htm">活动卡列表</a></span> <span class="tab-two"></span></div>
+    <div class="setcont" id="base">
+      <ul class="set1">
+        <li> <span class="webname">
+          <strong class="orange fontsize20">*</strong>活动卡名称: <b>$!card.cardName</b>
+          </span>
+        </li>
+
+      </ul>
+      <ul class="set1">
+        <li>
+          <strong class="orange fontsize20">*</strong> 发行数量：
+        </li>
+        <li>
+   	    <span class="webname">
+          <input id="count" name="count" type="text" value=""/>
+   	    </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="submit">
+    <input name="" type="button" value="保存" style="cursor:pointer;" onclick="saveForm();"/>
+  </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link href="$!webPath/resources/style/system/manage/$!{config.websiteCss}/template.css"  rel="stylesheet" type="text/css"/>
+<link  href="$!webPath/resources/style/common/css/jquery-ui-1.8.22.custom.css" type=text/css rel=stylesheet>
+<script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+<script src="$!webPath/resources/js/jquery.validate.min.js"></script>
+<script src="$!webPath/resources/js/jquery.shop.common.js"></script>
+<script src="$!webPath/resources/js/jquery.poshytip.min.js"></script>
+<script src="$!webPath/resources/js/jquery-ui-1.8.21.js"></script>
+<script src="$!webPath/resources/js/jquery.zh.cn.js"></script>
+<script>
+jQuery(document).ready(function(){
+  jQuery('#beginTime').attr("readonly","readonly").datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  jQuery('#endTime').attr("readonly","readonly").datepicker({
+	  dateFormat:"yy-mm-dd",
+	  changeMonth: true,
+	  changeYear: true
+  });
+  //
+});
+function ajax_update(id,fieldName,obj){
+   var val=jQuery(obj).val();
+   jQuery.ajax({type:'POST',
+	              url:'$!webPath/admin/activity_ajax.htm',
+				  data:{"id":id,"fieldName":fieldName,"value":val},
+				beforeSend:function(){
+
+				},
+			   success:function(data){
+	             if(val==""){
+				   jQuery(obj).attr("src","$!webPath/resources/style/system/manage/blue/images/"+data+".png");
+				 }else{
+				   jQuery(obj).val(val);
+				 }
+              }
+	    });
+}
+</script>
+</head>
+<body>
+<div class="cont">
+  <h1 class="seth1">活动卡管理</h1>
+  <div class="settab"><span class="tab-one"></span> <span class="tabs"> <a href="$!webPath/admin/card_list.htm" class="this">活动卡列表</a> | <a href="$!webPath/admin/card_add.htm" >新增活动卡</a></span> <span class="tab-two"></span></div>
+  <form method="post" id="ListForm" action="$!webPath/admin/card_list.htm">
+    <div class="allshop_table">
+    <table width="98%" border="0" cellspacing="0" cellpadding="0">
+      <tr style="background: #if($!config.websiteCss=='blue') #2A7AD2 #end
+      #if($!config.websiteCss=='black')#333 #end; height:30px; color:#FFF">
+        <td width="46"></td>
+        <td width="180">活动卡名称</td>
+        <td width="234" align="center">活动卡图片</td>
+        <td width="100" align="center">活动卡类型</td>
+        <td  align="center" width="100">活动卡面值</td>
+        <td  align="center" width="80">卡号数量</td>
+        <td width="223"  align="center">有效期限</td>
+        <td width="300" align="center">操作</td>
+      </tr>
+      #foreach($obj in $objs)
+      <tr id="column_$!{obj.id}">
+        <td><input name="checkbox" type="checkbox" id="checkbox" value="$!obj.id" /></td>
+        <td>$!obj.cardName</td>
+        <td align="center"><img src="$!webPath//$!obj.cardImage" width="160px" height="80px"/></td>
+        <td align="center">$!obj.cardType.typeName</td>
+        <td align="center">$!obj.cardAmount</td>
+        <td align="center">$!cardHelper.getItemCount($!obj.id)</td>
+          <td>
+              #if (!$!obj.beginDate && !$!obj.endDate) 永久
+              #elseif ($!obj.beginDate && $!obj.endDate) 自$!dateUtil.formatDateShort($!obj.beginDate)起 ~ 截至到$!dateUtil.formatDateShort($!obj.endDate)
+              #elseif (!$!obj.beginDate && $!obj.endDate) 截至到$!dateUtil.formatDateShort($!obj.endDate)
+              #elseif ($!obj.beginDate && !$!obj.endDate) 自$!dateUtil.formatDateShort($!obj.beginDate)起 ~ 到永久
+              #end
+          </td>
+          <td align="center" class="aoprater">
+              <a href="$!webPath/admin/card_item_list.htm?cardId=$!obj.id">卡号列表</a> |
+              <a href="$!webPath/admin/card_item_publish.htm?cardId=$!obj.id&currentPage=$!currentPage">发行卡号</a> |
+              <!--<a href="$!webPath/admin/card_log.htm?cardId=$!obj.id">变动记录</a> |-->
+              <a href="$!webPath/admin/card_edit.htm?cardId=$!obj.id&currentPage=$!currentPage">编辑</a> |
+              <a href="javascript:void(0);" onclick="if (confirm('您确定要删除该活动卡吗?')) window.location.href='$!webPath/admin/card_remove.htm?ids=$!obj.id&currentPage=$!currentPage'" class="blue">删除</a>
+          </td>
+      </tr>
+      #end
+      <tr style="background:#F2F2F2; height:30px;">
+        <td colspan="8"><div class="fenye3">
+          <input name="endDate" type="hidden" id="endDate" value="$!endDate" />
+          <input name="beginDate" type="hidden" id="beginDate" value="$!beginDate" />
+          <input name="validFlag" type="hidden" id="validFlag" value="$!validFlag" />
+          <!--<input name="q_ac_title" type="hidden" id="q_ac_title" value="$!q_ac_title" />-->
+          <input type="hidden" name="mulitId" id="mulitId" />
+          <input name="currentPage" type="hidden" id="currentPage" value="$!currentPage" />
+          $!gotoPageFormHTML</div>
+          <div class="shopbtn shopfx">
+            <input type="checkbox" name="all" id="all" value="" onclick="selectAll(this)"/>
+            &nbsp;&nbsp;全部</div>
+          <div class="shop_btn_del shopbtn">
+            <input name="" type="button" value="删除" onclick="cmd('$!webPath/admin/card_del.htm');"/>
+         </div></td>
+      </tr>
+    </table>
+  </div>
+  </form>
+</div>
+</body>
+</html>

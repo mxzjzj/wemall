@@ -1,0 +1,80 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.tg{
+	
+}
+.tg img{
+	width: 100%;
+}
+.tg-top{
+	background-color: red;
+	text-align: center;
+}
+#tg-toubu{
+  width: 100%;
+  font-family: MicrosoftYaHei;
+  font-size: 3rem;
+  line-height: 3;
+  letter-spacing: 2.4px;
+  text-align: center;
+  color: #ffffff;
+}
+
+#tg-biaoti {
+  width: 100%;
+  height:3rem;
+  font-family: MicrosoftYaHei;
+  font-size: 3rem;
+  text-align: left;
+  color: #333333;
+  margin: 0 2rem;
+}
+ #tg-jianjie {
+  width:100%;
+  height: 5rem;
+  font-family: MicrosoftYaHei;
+  font-size: 2rem;
+  line-height: 1.5;
+  text-align: left;
+  color: #333333;
+  margin: 0 2rem;
+}
+.tg-bottom{
+	background: url(../images/kaituan.png);
+	background-size: 100% 100%;
+	width: 90%;
+	height:6rem;
+	margin-bottom: 2rem;
+}
+#tg-jiage{
+  width: 100%;
+  height: 35px;
+  font-family: MicrosoftYaHei;
+  font-size: 3rem;
+  line-height: 2;
+  letter-spacing: 3.6px;
+  margin-left: 20%;
+  color: #ffffff;
+}
+.tg-bottom{
+	position: relative;
+
+	margin-top: 1rem;
+}
+#tg-kaituan{
+	color: red;
+	font-size: 3rem;
+	position: absolute;
+	right: 10%;
+	line-height: 2;
+}
+.tg-dibu{
+	width: 100%;
+	height: 5rem;
+	background-color:  #f1f1f1;
+	margin-top: 3rem;
+	
+}
+

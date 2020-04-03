@@ -1,0 +1,10 @@
+.floor-container
+{
+	height:100%;
+	width:100%;
+}
+.floor-graphic-item
+{
+	float:left;
+	width:100%;
+}

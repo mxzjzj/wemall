@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-wap-web-app-capable">
+<meta content="black-translucent" name="apple-wap-web-app-status-bar-style">
+<title>$!config.title</title>
+
+<link href="$!webPath/resources/style/system/front/wap/css/style.css" rel="stylesheet" type="text/css">
+	<script src="$!webPath/resources/style/system/front/wap/js/jquery-1.10.2.min.js"></script>
+	<script src="$!webPath/resources/style/system/front/wap/js/TouchSlide.1.1.js"></script>
+	<script src="$!webPath/resources/style/system/front/wap/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script src="$!webPath/resources/style/system/front/wap/css/wb.js"></script>
+	<script>
+		function timeCount(remain_id) {
+			function _fresh() {
+				var nowDate = new Date(), //当前时间
+				endDate = new Date($('#' + remain_id).attr('endtime')), //截止时间
+				totalS = parseInt((endDate.getTime() - nowDate.getTime()) / 1000); //总秒数
+				_day = parseInt(totalS / 3600 / 24) + "";
+				_hour = parseInt(totalS / 3600 % 24) + "";
+				_minute = parseInt((totalS / 60) % 60) + "";
+				_second = parseInt(totalS % 60) + "";
+				d_html = "";
+				if (_day.length < 2) {
+					d_html = "<b>0</b>";
+				}
+				for (var n = 0; n < _day.length; n++) {
+					var q = _day.substring(n, n + 1);
+					d_html = d_html + '<b>' + q + '</b>';
+				}
+				d_html = d_html + "<b>天</b>"
+				h_html = "";
+				if (_hour.length < 2) {
+					h_html = "<b>0</b>";
+				}
+				for (var n = 0; n < _hour.length; n++) {
+					var q = _hour.substring(n, n + 1);
+					h_html = h_html + '<b>' + q + '</b>';
+				}
+				m_html = "";
+				if (_minute.length < 2) {
+					m_html = "<b>0</b>";
+				}
+				for (var n = 0; n < _minute.length; n++) {
+					var q = _minute.substring(n, n + 1);
+					m_html = m_html + '<b>' + q + '</b>'
+				}
+				s_html = "";
+				if (_second.length < 2) {
+					s_html = "<b>0</b>";
+				}
+				for (var n = 0; n < _second.length; n++) {
+					var q = _second.substring(n, n + 1);
+					s_html = s_html + '<b>' + q + '</b>'
+				}
+				jQuery('#' + remain_id).html(
+						d_html + '<strong>:</strong>' + h_html
+								+ '<strong>:</strong>' + m_html
+								+ '<strong>:</strong>' + s_html);
+				if (totalS <= 0) {
+					jQuery('#' + remain_id).html('该0元试用已结束');
+					clearInterval(sh);
+				}
+			}
+			_fresh();
+			var sh = setInterval(_fresh, 1000);
+		}
+		
+		jQuery(document).ready(function() {
+			jQuery("li[id=gc_]").each(function(index, element) {
+				if (jQuery(this).find(".fl").html().length > 5) {
+					var a = jQuery(this).find(".fl").html().substring(0, 5);
+					jQuery(this).find(".fl").html(a);
+				}
+			});
+
+			timeCount("time_down_info");
+			if (isWeiXin()) {
+				jQuery(".phone_top").hide();
+			} else {
+				jQuery(".phone_top").show();
+			}
+		});
+		function search_form() {
+			jQuery("#theForm").submit();
+		}
+		function isWeiXin() {
+			var ua = window.navigator.userAgent.toLowerCase();
+			if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	</script>
+</head>
+<body class="index_bg">
+
+	<div class="phone_main">
+		<!--顶部-->
+		<div class="phone_top">
+			<a href="$!webPath/wap/index.htm"> <img
+				src="$!webPath/resources/style/system/front/wap/images/download.jpg"></a>
+			<a class="close" href="javascript:void(0);"
+				onclick="jQuery('.phone_top').remove();"> <img
+				src="$!webPath/resources/style/system/front/wap/images/close.png"
+				width="30" height="30"></a>
+		</div>
+
+		<div class="logo_line" style=" display:none;">
+			<img src="$!webPath/resources/style/system/front/wap/images/wap_logo.png" > 
+				#if($!{user})
+					<span class="log"><a href="$!webPath/wemall_logout.htm">退出</a> </span>
+					<span class="log"><a href="javascript:void(0);">$!CommUtil.substring("$!{user.userName}",5)您好</a></span>
+				#else 
+					<span class="log"><a href="$!webPath/user/login.htm">登录</a> </span>
+					<span class="log"><a href="$!webPath/register.htm">注册</a> </span>
+				#end
+		</div>
+
+		
+		<!--幻灯-->
+		<div class="focusBox" id="focusBox">
+			<script src="$!webPath/advert_invoke.htm?id=262157"></script> 
+		</div>
+		<form name="theForm" id="theForm" action="$!webPath/search.htm" method="post">
+			<div class="search_line">
+				<span> 
+				<input type="hidden" name="type" value="goods" /> 
+				<input type="text" placeholder="搜索商品" name="keyword" id="keyword">
+				</span>
+				<b><img src="$!webPath/resources/style/system/front/wap/images/search_icon.png" width="25" height="25" onclick="search_form();"></b>
+			</div>
+		</form>
+
+
+		<!--导航菜单-->
+		<div class="nav">
+			<ul>
+				<li><a href="$!webPath/goodsclass.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-chaoshi.png">
+							<p>锡好分类</p></a></li>
+				<li><a href="$!webPath/wap/index_nongye.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-nongye.png">
+							<p>锡好农业</p></a></li>
+				<li><a href="$!webPath/wap/index_industry.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-gongye.png">
+							<p>锡好工业</p></a></li>
+				<li><a href="$!webPath/wap/index_tour.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-lvyou.png">
+							<p>锡好味道</p></a></li>
+			    <li><a href="$!webPath/wap/index_laozihao.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-laozihao.png">
+							<p>老字号</p></a></li>
+				<li><a href="#"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-chongzhi.png">
+							<p>充值缴费</p></a></li>
+				<li><a href="$!webPath/goods_cart1.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-gouwuche.png">
+							<p>购物车</p></a></li>
+				<li><a href="$!webPath/buyer/index.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-geren.png">
+							<p>个人中心</p></a></li>
+							<li><a href="$!webPath/wap/group_view.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-huodong.png">
+							<p>团购活动</p></a></li>
+				<li><a href="$!webPath/brand.htm"><img
+						src="$!webPath/resources/style/system/front/wap/images/nav-jie.png">
+							<p>健康专区</p></a></li>
+			</ul>
+		</div>
+		<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/jd2.png">
+		</div>
+		<!-- 秒杀 -->
+		#if($spikes.size() > 0)
+		<div class="miaosha">
+		#else
+		<div class="miaosha" style="display:none;">
+		#end
+		<div class="ms-top">
+		<div><img width="20px" height="20px"  src="$!webPath/resources/style/system/front/wap/images/naozhong.png"></img></div>
+		<div class="ms-temai">今日特卖</div>
+		
+		<div class="ms-kaishi">距离秒杀开始还有</div>
+	    <div id="ms-Time">
+		    <span id="ms-hour"></span>
+			<span id="ms-Minn"></span>
+			<span id="ms-Sencond"></span>
+		</div>
+		</div>
+		
+		<div class="ms-foot">
+		<ul>
+			#set($count=0)
+			#foreach($!spike in $spikes)
+	        #if($!spike.goods_main_photo)
+	        #set($img="$!{spike.goods_main_photo.path}/$!{spike.goods_main_photo.name}")
+	        #if($img.substring(0,4)!="http")
+	        	#set($img="$!imageWebServer/$img")
+	        #end
+	        #else
+	        #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+	        #end
+	        #set($goods_url="$!webPath/goods_$!{spike.id}.htm")
+	        #if($!config.second_domain_open)
+	        #set($goods_url="http://$!{spike.goods_store.store_second_domain}.$!{domainPath}/goods_$!{spike.id}.htm")
+	        #end
+	        #set($count=$count+1)
+			<li>
+				<a href="$!goods_url"><img width="100px" height="100px" src="$img"></img>
+					<p style="height: 16px;overflow: hidden;">$!CommUtil.substring("$!spike.goods_name",8)</p>
+				</a>
+		        <p>
+					<span ><i>￥</i>$!{spike.goods_current_price}</span>
+				</p>
+			</li>
+			#end
+			  <li>
+				<a href="http://www.xihao99.com/xihao/goods_107113.htm"><img width="100px" height="100px" src="../upload/store/34/2017/07/26/16b030b2-4526-4cda-98e3-73ba8c3fac0d.jpg">
+					<p  style="height: 16px;overflow: hidden;">大别山土鸡蛋30枚..</p>
+				</a>
+		        <p>
+					<span><i>￥</i>27.92</span>
+				</p>
+			</li>
+		</ul>
+		</div>
+		</div>
+			<script language="javascript" type="text/javascript">
+			var interval = 1000;
+		
+			function miaoSha(year,month,day,divname) {
+				var now = new Date();
+				var endDate = new Date(year, month - 1, day);
+				var leftTime = endDate.getTime() - now.getTime();
+				var leftsecond = parseInt(leftTime / 1000);
+				var day1 = Math.floor(leftsecond / (60 * 60 * 24));
+				var hour = Math.floor((leftsecond - day1 * 24 * 60 * 60) / 3600);
+				var minute = Math.floor((leftsecond - day1 * 24 * 60 * 60 - hour * 3600) / 60);
+				var second = Math.floor(leftsecond - day1 * 24 * 60 * 60 - hour * 3600 - minute * 60);
+				$("#ms-hour").html(hour);
+				$("#ms-Minn").html(minute);
+				$("#ms-Sencond").html(second);
+			}
+			window.setInterval(function() {
+				miaoSha(2017, 7, 16, 'divset');
+			}, interval);
+		</script>
+		<!--广告-->
+		<div class="floor-container" style="float: left; margin: 0px -10px 0 0;">
+               <div class="floor-graphic-item">
+			   <span>
+                   <a href="$!webPath/store_goods_list_414.htm"><img  src="$!webPath/resources/style/system/front/wap/images/fx.png" style="width:48%"/></a>
+               </span>				  
+				<span> 
+			     	<a href="http://www.xihao99.com/xihao/store_goods_list_5.htm"><img  src="$!webPath/resources/style/system/front/wap/images/3.png"  style="width:24%"/></a>
+			</span>	 			  
+             <span>
+				   <a href="http://www.xihao99.com/xihao/store_goods_list_801.htm"><img  src="$!webPath/resources/style/system/front/wap/images/4.png"  style="width:24%"/>
+				   </span>
+             </div>
+               <div class="floor-graphic-item">
+					  <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_121.htm"> <img  src="$!webPath/resources/style/system/front/wap/images/rexiao.png" style="width:48%"/></a>
+               </span>				  
+				<span> 
+			      <a href="http://www.xihao99.com/xihao/store_goods_list_416.htm"> <img  src="$!webPath/resources/style/system/front/wap/images/5.png"  style="width:24%"/></a>
+			</span>	 			  
+             <span>
+				   <a href="http://www.xihao99.com/xihao/store_goods_list_273.htm"> <img  src="$!webPath/resources/style/system/front/wap/images/6.png"  style="width:24%"/></a>
+				   </span>
+               </div>
+            </div>
+			  <div class="floor-graphic-item bj1">
+			    <span>
+                   <img src="$!webPath/resources/style/system/front/wap/images/aishenghuo.png" style="height:1.8rem ;"/></a>
+               </span>				  
+				
+               </div>
+			    <div class="floor-graphic-item">
+			    <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_815.htm"><img src="$!webPath/resources/style/system/front/wap/images/aichi.png" style="width:49%"/></a>
+               </span>
+               <span>
+                  <a href="$!webPath/store_goods_list_163.htm"> <img src="$!webPath/resources/style/system/front/wap/images/jingdong.png" style="width:49%"/></a>
+               </span>			   
+				
+               </div>
+               <div class="floor-graphic-item">
+			    <span>
+                  <a href="$!webPath/store_goods_list_201.htm"> <img src="$!webPath/resources/style/system/front/wap/images/aiwan.png" style="width:49%"/></a>
+               </span>
+               <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_1057.htm"><img src="$!webPath/resources/style/system/front/wap/images/aijia.png" style="width:49%"/></a>
+               </span>			   
+				
+               </div>
+                <div class="floor-graphic-item">
+			    <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_396.htm"> <img src="$!webPath/resources/style/system/front/wap/images/aimeili.png" style="width:32%"/></a>
+               </span>
+               <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_711.htm"> <img src="$!webPath/resources/style/system/front/wap/images/aibaobao.png" style="width:33%"/></a>
+               </span>
+                <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_526.htm"><img src="$!webPath/resources/style/system/front/wap/images/aifan.png" style="width:32%"/></a>
+               </span>				   
+               </div> 
+               
+                  <div class="floor-graphic-item bj1">
+			    <span>
+                   <img src="$!webPath/resources/style/system/front/wap/images/youpz.png" style="height:1.8rem ;"/>
+               </span>				  
+			    </div>	
+                <div class="floor-graphic-item">
+			    <span>
+                 <a href="http://www.xihao99.com/xihao/store_goods_list_1159.htm"> <img src="$!webPath/resources/style/system/front/wap/images/zhuangbei.png" style="width:49%"/></a>
+               </span>
+               <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_207.htm"> <img src="$!webPath/resources/style/system/front/wap/images/danshen.png" style="width:49%"/></a>
+               </span>			   
+					
+               </div>
+               <div class="floor-graphic-item">
+			    <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_1.htm"> <img src="$!webPath/resources/style/system/front/wap/images/nande.png" style="width:49%"/></a>
+               </span>
+               <span>
+                 <a href="http://www.xihao99.com/xihao/store_goods_list_1027.htm">  <img src="$!webPath/resources/style/system/front/wap/images/lixiangjia.png" style="width:24%"/></a>
+               </span>
+                <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_582.htm"> <img src="$!webPath/resources/style/system/front/wap/images/baobao.png" style="width:24%"/></a>
+               </span>				   
+               </div> 
+                <div class="floor-graphic-item">
+			    <span>
+                <a href="http://www.xihao99.com/xihao/store_goods_list_512.htm"> <img src="$!webPath/resources/style/system/front/wap/images/youbige.png" style="width:24%"/></a>
+               </span>
+			    <span>
+                 <a href="http://www.xihao99.com/xihao/store_goods_list_285.htm"> <img src="$!webPath/resources/style/system/front/wap/images/zhubao.png" style="width:24%"/></a>
+               </span>
+               <span>
+                <a href="http://www.xihao99.com/xihao/store_goods_list_132.htm"><img src="$!webPath/resources/style/system/front/wap/images/quanwang.png" style="width:24%"/></a>
+               </span>
+                <span>
+                 <a href="http://www.xihao99.com/xihao/store_goods_list_1344.htm"> <img src="$!webPath/resources/style/system/front/wap/images/maishou.png" style="width:24%"/></a>
+               </span>				   
+               </div> 
+               <div class="floor-graphic-item bj1">
+			    <span>
+                 <img src="$!webPath/resources/style/system/front/wap/images/tese.png" style="height:1.8rem ;"/>
+               </span>				  
+			    </div>
+               <div class="floor-graphic-item">
+			    <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_110.htm"> <img src="$!webPath/resources/style/system/front/wap/images/shenghuoyule.png" style="width:49%"/></a>
+               </span>
+               <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_132.htm"> <img src="$!webPath/resources/style/system/front/wap/images/zhineng.png" style="width:49%"/></a>
+               </span>			   
+				
+               </div>
+               <div class="floor-graphic-item">
+			    <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_1344.htm">  <img src="$!webPath/resources/style/system/front/wap/images/wuxi.png" style="width:32%"/></a>
+               </span>
+               <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_556.htm"><img src="$!webPath/resources/style/system/front/wap/images/aiche.png" style="width:33%"/></a>
+               </span>
+                <span>
+                   <a href="http://www.xihao99.com/xihao/store_goods_list_412.htm"> <img src="$!webPath/resources/style/system/front/wap/images/dapai.png" style="width:32%"/></a>
+               </span>				   
+               </div> 
+                <div class="floor-graphic-item">
+			    <span>
+                 <a href="http://www.xihao99.com/xihao/store_goods_list_712.htm">  <img src="$!webPath/resources/style/system/front/wap/images/haochi.png" style="width:32%"/></a>
+               </span>
+               <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_441.htm"> <img src="$!webPath/resources/style/system/front/wap/images/weimei.png" style="width:33%"/></a>
+               </span>
+                <span>
+                  <a href="http://www.xihao99.com/xihao/store_goods_list_405.htm"> <img src="$!webPath/resources/style/system/front/wap/images/bianmei.png" style="width:32%"/></a>
+               </span>				   
+               </div> 						   
+     	</div>
+		
+	
+		<!--精品推荐-->
+		<div class="phone_floor">
+			<h1>
+				<span class="fl">精品推荐</span>
+			</h1>
+			<div class="recom">
+				<div class="ohbox">
+					<ul class="piclist">
+					#foreach($!store_reommend_good in $store_reommend_goods)
+		              #if($!store_reommend_good.goods_main_photo)
+		              	#set($img="$!{store_reommend_good.goods_main_photo.path}/$!{store_reommend_good.goods_main_photo.name}")
+		              	#if($img.substring(0,4)!="http")
+		              		#set($img = "../"+$img)
+		              	#end
+		              #else
+		              	#set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+		              #end
+		              
+		              #set($goods_url="$!webPath/goods_$!{store_reommend_good.id}.htm")
+		              #if($!config.second_domain_open)
+		              	#set($goods_url="http://$!{store_reommend_good.goods_store.store_second_domain}.$!{domainPath}/goods_$!{store_reommend_good.id}.htm")
+		              #end
+						<li >
+							<a href="$!goods_url">
+								<img src="$!img" >
+								<span class="re_name">$!CommUtil.substring("$!store_reommend_good.goods_name",10)</span>
+								<span class="bg"></span>
+							</a>
+						</li>
+					  #end
+					<li>
+							<a href="http://www.xihao99.com/xihao/goods_194985.htm">
+								<img src="$!imageWebServer/upload/store/34/2017/08/18/eb2e307a-7342-43e8-a719-493288c34cba.jpg">
+								<span class="re_name">【锡好味道】288元江浙...</span>
+								<span class="bg"></span>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.xihao99.com/xihao/goods_194983.htm">
+								<img src="$!imageWebServer/upload/store/41/2017/08/18/c1b8c358-6868-4c05-bd69-1af5fb71cc7f.jpg">
+								<span class="re_name">【锡好味道】CARATICE 500ml</span>
+								<span class="bg"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div id="phone_floor" class="phone_floor" style=" display:none;">
+		    <h1><span class="fl">品牌街</span><span class="fr"><a href="$!webPath/brand.htm">更多</a></span></h1>
+		    <div class="phone_brand">
+		      <ul id="banners">
+		      	#foreach($gb in $gbs)
+	            <li #if($!velocityCount>4)style="display:none;"#end>
+	            <a href="$!webPath/brand_goods_$!{gb.id}.htm" target="_blank"><img src="$!imageWebServer/$!gb.brandLogo.path/$!gb.brandLogo.name" width="88" height="44" /></a></li>
+	            #end
+              </ul>
+		    </div>
+		</div>
+		
+		<div class="phone_floor" style=" display:none;">
+		    <div class="phone_activity">
+		      <h1><span class="fl">促销商品</span><span class="fr"></span></h1>
+		      <ul>
+		      	#foreach($obj in $dgs)
+	              #set($goods_url="$!webPath/goods_$!{obj.d_goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!{obj.d_goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{obj.d_goods.id}.htm")
+	              #end
+		          <li>
+		          <a href="$!goods_url">
+		          #if($!obj.d_goods.goods_main_photo)               
+                	#set($img="$!{obj.d_goods.goods_main_photo.path}/$!{obj.d_goods.goods_main_photo.name}")
+                  		#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+		          <img src="$!img">
+		          <p class="price">现价:¥<b>$!{obj.d_goods.goods_current_price}</b></p>
+		          </a>
+		          </li>
+		          #end
+		        </ul>
+		    </div>
+		</div>
+		<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/sp.png"/>
+		</div>
+		
+		<!-- 生鲜食饮 -->
+		<div class="home_floor phone_activity">
+			<div class="floor_title"><img src="$!webPath/resources/style/system/front/wap/images/shengxian.png" height="25"></div>
+			<ul class="floor_block">
+				#foreach($goods in $sxysGoods)
+	              #set($goods_url="$!webPath/goods_$!{goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{goods.id}.htm")
+	              #end
+	              #if($!goods.goods_main_photo)               
+                	#set($img="$!{goods.goods_main_photo.path}/$!{goods.goods_main_photo.name}")
+	                	#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+			    <li>
+				  <a href="$!goods_url">
+				  <img src="$!img">
+				  <p class="name">$!CommUtil.substring("$!{goods.goods_name}",5)</p>
+				  <p class="price"><b>¥$!{goods.goods_current_price}</b></p>
+				  </a>
+			    </li>
+			    #end
+			</ul>
+		</div>
+		
+		<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/jdpp.png"/>
+		</div>
+		<!-- 手机数码 -->
+		<div class="home_floor phone_activity">
+			<div class="floor_title"><img src="$!webPath/resources/style/system/front/wap/images/shouji.png" height="25"></div>
+			<ul class="floor_block">
+				#foreach($goods in $sjsmGoods)
+	              #set($goods_url="$!webPath/goods_$!{goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{goods.id}.htm")
+	              #end
+	              #if($!goods.goods_main_photo)               
+                	#set($img="$!{goods.goods_main_photo.path}/$!{goods.goods_main_photo.name}")
+	                	#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+			    <li>
+				  <a href="$!goods_url">
+				  <img src="$!img">
+				  <p class="name">$!CommUtil.substring("$!{goods.goods_name}",5)</p>
+				  <p class="price"><b>¥$!{goods.goods_current_price}</b></p>
+				  </a>
+			    </li>
+			    #end
+			</ul>
+		</div>
+		
+			<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/zzs.png"/>
+		</div>
+		<!-- 美妆个护 -->
+		<div class="home_floor phone_activity">
+			<div class="floor_title"><img src="$!webPath/resources/style/system/front/wap/images/meizhuang.png" height="25"></div>
+			<ul class="floor_block">
+				#foreach($goods in $mzghGoods)
+	              #set($goods_url="$!webPath/goods_$!{goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{goods.id}.htm")
+	              #end
+	              #if($!goods.goods_main_photo)               
+                	#set($img="$!{goods.goods_main_photo.path}/$!{goods.goods_main_photo.name}")
+	                	#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+			    <li>
+				  <a href="$!goods_url">
+				  <img src="$!img">
+				  <p class="name">$!CommUtil.substring("$!{goods.goods_name}",5)</p>
+				  <p class="price"><b>¥$!{goods.goods_current_price}</b></p>
+				  </a>
+			    </li>
+			    #end
+			</ul>
+		</div>
+			<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/hf.png"/>
+		</div>
+		<!-- 户外运动 -->
+		<div class="home_floor phone_activity">
+			<div class="floor_title"><img src="$!webPath/resources/style/system/front/wap/images/huwai.png" height="25"></div>
+			<ul class="floor_block">
+				#foreach($goods in $hwydGoods)
+	              #set($goods_url="$!webPath/goods_$!{goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{goods.id}.htm")
+	              #end
+	              #if($!goods.goods_main_photo)               
+                	#set($img="$!{goods.goods_main_photo.path}/$!{goods.goods_main_photo.name}")
+	                	#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+			    <li>
+				  <a href="$!goods_url">
+				  <img src="$!img">
+				  <p class="name">$!CommUtil.substring("$!{goods.goods_name}",5)</p>
+				  <p class="price"><b>¥$!{goods.goods_current_price}</b></p>
+				  </a>
+			    </li>
+			    #end
+			</ul>
+		</div>
+		 
+		
+		
+			<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/pssq.png"/>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="phone_floor">
+		    <div class="phone_activity">
+		      <h1><span class="fl">最新商品</span><span class="fr"></span></h1>
+		      <ul>
+		      	#foreach($goods in $new_list)
+	              #set($goods_url="$!webPath/goods_$!{goods.id}.htm")
+	              #if($!config.second_domain_open)
+	              	#set($goods_url="http://$!goods.goods_store.store_second_domain}.$!{domainPath}/goods_$!{goods.id}.htm")
+	              #end
+		          <li>
+		          <a href="$!goods_url">
+		          #if($!goods.goods_main_photo)               
+                	#set($img="$!{goods.goods_main_photo.path}/$!{goods.goods_main_photo.name}")
+	                	#if($img.substring(0,4)!="http")
+	                		#set($img="$!imageWebServer/$img")
+	                	#end
+                  #else
+                    #set($img="$!imageWebServer/$!{config.goodsImage.path}/$!{config.goodsImage.name}")
+                  #end
+		          <img src="$!img">
+		          <p class="name">$!CommUtil.substring("$!{goods.goods_name}",5)</b></p>
+		          <p class="price">现价:¥<b>$!{goods.goods_current_price}</b></p>
+		          </a>
+		          </li>
+		          #end
+		        </ul>
+		    </div>
+		</div>
+		
+			<div>
+		<img src="$!webPath/resources/style/system/front/wap/images/gly.png"/>
+		</div>
+ $!httpInclude.include("/footer.htm")
+
+
+
+</body>
+</html>

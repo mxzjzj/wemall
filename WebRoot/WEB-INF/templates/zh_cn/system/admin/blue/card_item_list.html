@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title></title>
+  <link href="$!webPath/resources/style/system/manage/$!{config.websiteCss}/template.css"
+        rel="stylesheet" type="text/css"/>
+  <link href="$!webPath/resources/style/common/css/jquery-ui-1.8.22.custom.css" type=text/css
+        rel=stylesheet>
+  <script src="$!webPath/resources/js/jquery-1.8.3.min.js"></script>
+  <script src="$!webPath/resources/js/jquery.validate.min.js"></script>
+  <script src="$!webPath/resources/js/jquery.shop.common.js"></script>
+  <script src="$!webPath/resources/js/jquery.poshytip.min.js"></script>
+  <script src="$!webPath/resources/js/jquery-ui-1.8.21.js"></script>
+  <script src="$!webPath/resources/js/jquery.zh.cn.js"></script>
+  <script>
+
+    function updateFieldValue(cardItemId, fieldName, obj)
+    {
+      var value = jQuery(obj).val();
+      jQuery.ajax(
+          {
+            type: 'POST',
+            url: '$!webPath/admin/card_item_update.htm',
+            data:
+                {
+                  "cardItemId": cardItemId,
+                  "fieldName": fieldName,
+                  "value": value
+                },
+            beforeSend: function() {},
+            success: function(data)
+            {
+              if (value == "")
+              {
+                jQuery(obj).attr("src", "$!webPath/resources/style/common/images/" + data + ".png");
+              }
+              else
+              {
+                jQuery(obj).val(value);
+              }
+            }
+          });
+    }
+
+  </script>
+</head>
+<body>
+<div class="cont">
+  <h1 class="seth1">活动卡</h1>
+  <div class="settab"><span class="tab-one"></span> <span class="tabs"> <a  href="$!webPath/admin/card_list.htm" class="this">活动卡列表</a> | <a
+      href="$!webPath/admin/card_item_list.htm?cardId=$!card.id">活动卡号列表</a></span> <span class="tab-two"></span>
+  </div>
+
+  <form id="ListForm" name="mainForm" action="$!webPath/admin/card_item_list.htm" method="post">
+
+    <input id="cardId" name="cardId" type="hidden" value="$!card.id"/>
+    <input id="ids" name="ids" type="hidden"/>
+
+    <div class="allmem_search">
+      <ul>
+        <li>
+          <span>活动卡名称：$!card.cardName</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="allshop_table">
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr style="background: #if($!config.websiteCss=='blue') #2A7AD2 #end
+      #if($!config.websiteCss=='black')#333 #end; height:30px; color:#FFF">
+          <td width="45">&nbsp;</td>
+          <td width="150">活动卡号</td>
+          <td width="150">活动卡密</td>
+          <td width="120">当前余额</td>
+          <td width="150">建卡时间</td>
+          <td width="150">状态</td>
+          <td width="100">是否冻结</td>
+          <td width="300" align="center">操作</td>
+        </tr>
+
+        #foreach ($obj in $objs)
+        <tr>
+          <td align="center">
+            <input id="checkbox" name="checkbox" type="checkbox" value="$!obj.id"/>
+          </td>
+
+          <td>$!obj.itemNumber</td>
+          <td>$!obj.itemPassword</td>
+          <td>$!obj.itemBalance</td>
+          <td>$!dateUtil.formatDate($!obj.createDate)</td>
+          #if ($!obj.validFlag)
+           <td style="color: red;">未用</td>
+          #end
+          
+          #if (!$!obj.validFlag)
+           <td>已用</td>
+          #end
+
+          <td>
+            <img src="$!webPath/resources/style/common/images/$!{obj.frozenFlag}.png" width="25"
+                 height="21" border="0" style="cursor:pointer;" title="可编辑"
+                 onclick="updateFieldValue('$!obj.id', 'frozenFlag', this)"/>
+          </td>
+
+          <td align="center" class="blue xiahua">
+            <a href="javascript:void(0);"
+               onclick="if (confirm('您确定要删除该活动卡号吗?')){window.location.href='$!webPath/admin/card_item_remove.htm?ids=$!obj.id&currentPage=$!currentPage&cardId=$!card.id'}">删除</a>
+          </td>
+        </tr>
+        #end
+
+        <tr>
+          <td align="center">
+            <input id="all" name="all" type="checkbox" onclick="checkAll(this)"/>
+          </td>
+
+          <td colspan="20">
+            <span class="allevel">全部</span>
+            <span class="shop_btn_del">
+	              <input type="button"
+                       onclick="checkAction('$!httpPath/ushop/admin/card_item_remove.htm?currentPage=$!currentPage')"
+                       value="删除"/>
+	            </span>
+          <div class="fenye3">
+          <input name="endDate" type="hidden" id="endDate" value="$!endDate" />
+          <input name="beginDate" type="hidden" id="beginDate" value="$!beginDate" />
+          <input name="validFlag" type="hidden" id="validFlag" value="$!validFlag" />
+          <!--<input name="q_ac_title" type="hidden" id="q_ac_title" value="$!q_ac_title" />-->
+          <input type="hidden" name="mulitId" id="mulitId" />
+          <input name="currentPage" type="hidden" id="currentPage" value="$!currentPage" />
+          $!gotoPageFormHTML</div>
+		  </td>
+		  </tr>
+      </table>
+    </div>
+
+
+  </form>
+</div>
+
+</body>
+</html>
